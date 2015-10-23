@@ -192,13 +192,61 @@ namespace Cake.Process.Tests.Integration
                 process.OutputDataReceived +=
                     (sender, args) => { outputDataReceived.Add(args.Output); };
 
-                //process.Start();
-
                 process.WaitForExit();
 
                 outputDataReceived.Should()
                     .BeEquivalentTo("Args received: --out line1 line2 --echoArgs --delay 100",
                         "line1", "line2");
+            }
+        }
+
+        [Fact, Trait("Category", "integration")]
+        public void Enumerating_GetStandardOutput_WillThrowWhenUsingOutputEvents()
+        {
+            var environment = FakeEnvironment.CreateWindowsEnvironment();
+            var log = new FakeLog();
+            var runner = new AdvProcessRunner(environment, log);
+
+            var settings =
+                new AdvProcessSettings()
+                    //.WithArguments(args => args.Append("--out line1 line2 --echoArgs --delay 100"))
+                    .UseWorkingDirectory(Environment.CurrentDirectory)
+                    .SetRedirectStandardOutput(true);
+
+            using (var process = runner.Start(_appExe, settings))
+            {
+                process.OutputDataReceived +=
+                    (sender, args) => { };
+
+                process.WaitForExit();
+
+                process.Invoking(p => p.GetStandardOutput().ToArray())
+                    .ShouldThrow<InvalidOperationException>();
+            }
+        }
+
+        [Fact, Trait("Category", "integration")]
+        public void Enumerating_GetStandardError_WillThrowWhenUsingOutputEvents()
+        {
+            var environment = FakeEnvironment.CreateWindowsEnvironment();
+            var log = new FakeLog();
+            var runner = new AdvProcessRunner(environment, log);
+
+            var settings =
+                new AdvProcessSettings()
+                    //.WithArguments(args => args.Append("--out line1 line2 --echoArgs --delay 100"))
+                    .UseWorkingDirectory(Environment.CurrentDirectory)
+                    .SetRedirectStandardError(true);
+
+            using (var process = runner.Start(_appExe, settings))
+            {
+                process.ErrorDataReceived +=
+                    (sender, args) => { };
+
+                process.WaitForExit();
+
+                process.Invoking(p => p.GetStandardError().ToArray())
+                    .ShouldThrow<InvalidOperationException>();
             }
         }
 
@@ -219,7 +267,10 @@ namespace Cake.Process.Tests.Integration
 
                 using (var process = runner.Start(_appExe, settings))
                 {
-                    process.Exited += (sender, args) => { exitCodeUponExit = args.ExitCode; };
+                    process.Exited += (sender, args) =>
+                    {
+                        exitCodeUponExit = args.ExitCode;
+                    };
 
                     process.WaitForExit();
 

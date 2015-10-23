@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cake.Core;
 using Cake.Core.IO;
 
@@ -10,6 +11,12 @@ namespace Cake.Process.Tests.Fakes
     public class FakeEnvironment : ICakeEnvironment
     {
         private readonly bool _isUnix;
+        private readonly IDictionary<string, string> _environmentVariables = new Dictionary<string, string>();
+
+        public IDictionary<string, string> GetEnvironmentVariables()
+        {
+            return _environmentVariables;
+        }
 
         /// <summary>
         /// Gets or sets the working directory.

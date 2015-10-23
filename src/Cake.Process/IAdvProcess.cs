@@ -48,14 +48,14 @@ namespace Cake.Process
         /// <summary>
         ///     Get the standard output of process
         /// </summary>
-        /// <returns>Returns process output <see cref="ProcessSettings.RedirectStandardOutput">RedirectStandardOutput</see> is true</returns>
+        /// <returns>Returns process output <see cref="AdvProcessSettings.RedirectStandardOutput">RedirectStandardOutput</see> is true</returns>
         IEnumerable<string> GetStandardOutput();
 
         /// <summary>
         ///     Get the standard error output of process
         /// </summary>
         /// <returns>
-        ///     Returns process error output <see cref="ProcessSettings.RedirectStandardError">RedirectStandardError</see> is
+        ///     Returns process error output <see cref="AdvProcessSettings.RedirectStandardError">RedirectStandardError</see> is
         ///     true
         /// </returns>
         IEnumerable<string> GetStandardError();

@@ -2,6 +2,9 @@ using Cake.Core.IO;
 
 namespace Cake.Process
 {
+    /// <summary>
+    ///     Represents a process runner.
+    /// </summary>
     public interface IAdvProcessRunner
     {
         /// <summary>

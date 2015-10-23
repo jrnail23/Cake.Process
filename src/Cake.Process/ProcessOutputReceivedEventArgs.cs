@@ -1,10 +1,12 @@
+using System;
+
 namespace Cake.Process
 {
     /// <summary>
     ///     The event args that contains information about the line of text written to either
     ///     StandardOutputStream or StandardErrorStream on the created process.
     /// </summary>
-    public class ProcessOutputReceivedEventArgs
+    public class ProcessOutputReceivedEventArgs : EventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ProcessOutputReceivedEventArgs" /> class.
